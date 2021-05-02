@@ -1,0 +1,25 @@
+version: "3.9"
+services:
+  db:
+    env_file:
+      - ./.env.local
+    container_name: "${DATABASE_NET}"
+    image: postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - "${DBPORT}:5432"
+  web:
+    container_name: django-web
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    volumes:
+      - ./web/:/web/
+    env_file:
+      - ./.env.local
+    ports:
+      - "80:${PORT}"
+volumes:
+    postgres:
+      name: postgres
