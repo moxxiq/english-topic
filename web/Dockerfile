@@ -9,6 +9,7 @@ RUN apt-get update && \
   pip install --upgrade pip && \
   apt install --no-install-recommends gcc -y && \
   rm -rf /var/lib/apt/lists/*
-COPY ./* /web/
+COPY ./requirements.txt /web/
 RUN pip install -r requirements.txt
-CMD python manage.py runserver 0.0.0.0:$PORT
+COPY ./* /web/
+CMD python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:$PORT
