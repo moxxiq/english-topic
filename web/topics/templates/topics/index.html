@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Topics</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/topics/votes.css' %}">
+</head>
+<body>
+{% if top and texts %}
+    <ul>
+    {% for i in top.keys %}
+        <li>
+            <a href="{% url 'topics:topic' i %}">{{ texts|get_item:i }}</a>
+            <span class="vote up">
+                <svg width="32" height="16">
+                    <path d="M 0 16 h 32 L 16 0 L 0 16 z" fill="currentColor"></path>
+                </svg>
+            </span>
+            {{ top|get_item:i }}
+            <span class="vote down">
+                <svg width="32" height="16">
+                    <path d="M 0 0 h 32 L 16 16 L 0 0 z" fill="currentColor"></path>
+                </svg>
+            </span>
+        </li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No topics are available.</p>
+{% endif %}
+<script src="{% static '/topics/votes.js' %}"></script>
+</body>
+</html>

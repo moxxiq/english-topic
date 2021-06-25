@@ -1,0 +1,13 @@
+.vote {
+  display: inline-block;
+  cursor: pointer;
+  color: #687074
+} 
+
+.up:hover {
+  color: #79d19f
+}
+
+.down:hover {
+  color: #f45148
+}
