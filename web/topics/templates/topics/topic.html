@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Topic</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/topics/votes.css' %}">
+</head>
+<body>
+    <ul>
+        <li>
+            {{topic.topic_text}}
+            <span class="vote up">
+                <svg width="32" height="16">
+                    <path d="M 0 16 h 32 L 16 0 L 0 16 z" fill="currentColor"></path>
+                </svg>
+            </span>
+            {{ rating }}
+            <span class="vote down">
+                <svg width="32" height="16">
+                    <path d="M 0 0 h 32 L 16 16 L 0 0 z" fill="currentColor"></path>
+                </svg>
+            </span>
+        </li>
+    </ul>
+<script src="{% static '/topics/votes.js' %}"></script>
+</body>
+</html>

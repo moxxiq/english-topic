@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import Http404
 from django.template import loader
 from django.template.defaulttags import register
 
@@ -30,8 +31,22 @@ def index(request):
         'texts': topics_text,
     }
     return HttpResponse(template.render(context, request))
-    return render(request, 'polls/index.html', context)
 
 
 def topic(request, topic_id):
-    return HttpResponse("You're looking at topic %s." % topic_id)
+    try:
+        topic_details = Topic.objects.get(id=topic_id)
+    except Topic.DoesNotExist:
+        raise Http404("Topic does not exist")
+    upvotes = Count(F('vote_value'), filter=Q(vote_value=Vote.VoteEnum.UPVOTE))
+    downvotes = Count(F('vote_value'), filter=Q(vote_value=Vote.VoteEnum.DOWNVOTE))
+    rating_list = Vote.objects.filter(id=topic_id).annotate(
+        upvotes=upvotes,
+        downvotes=downvotes,
+        offset=upvotes - downvotes,
+    )
+    rating = rating_list[0].offset if len(rating_list) > 0 else 0
+    return render(request, 'topics/topic.html',
+                  {"topic": topic_details,
+                   "rating": rating,
+                   })
